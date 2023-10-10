@@ -40,4 +40,11 @@ export const blockList: Block[] = [
     activeIcon: "/src/assets/xz2.png",
     max: 1,
   },
+  {
+    type: 5,
+    name: "过关箱子",
+    icon: "/src/assets/xz2.png",
+    activeIcon: "",
+    max: 1,
+  },
 ];

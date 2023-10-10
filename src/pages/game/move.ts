@@ -1,3 +1,5 @@
+import { end, play } from "./game.ts";
+
 interface Position {
   x: number;
   y: number;
@@ -44,11 +46,13 @@ export default function useMove(mapData: any) {
     // 恢复原位置上
     mapData.value[oldPos.y][oldPos.x] = perBoxType;
     // 修改箱子新位置
-    mapData.value[newPos.y][newPos.x] = 4;
+    mapData.value[newPos.y][newPos.x] = oldType === 3 ? 5 : 4
     // 修改玩家新位置
     setMasterPos(oldPos, perBoxType);
     // 保存新位置上type
     perBoxType = oldType;
+    // 判断游戏是否结束
+    oldType === 3 ? end() : play();
   }
 
   function getTypeByPos(position: Position): number {
@@ -62,15 +66,13 @@ export default function useMove(mapData: any) {
       const x = _x + movePos.x;
       const y = _y + movePos.y;
       const type = getTypeByPos({ x, y });
-      //   console.log(_x, _y);
-      //   console.log(x, y);
-      //   console.log(type);
       switch (type) {
         case 0:
         case 3:
           setMasterPos({ x, y }, type);
           break;
         case 4:
+        case 5:
           const boxNextX = x + movePos.x;
           const boxNextY = y + movePos.y;
           const pos = { x: boxNextX, y: boxNextY };
