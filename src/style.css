@@ -1,0 +1,25 @@
+:root {
+  --length: 50px;
+}
+.base {
+  width: var(--length);
+  height: var(--length);
+}
+.col {
+  height: var(--length);
+}
+.empty {
+  width: var(--length);
+  height: var(--length);
+  background: silver;
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+body {
+  padding: 0;
+  margin: 0;
+  user-select: none;
+}
+img {
+  -webkit-user-drag: none;
+}
