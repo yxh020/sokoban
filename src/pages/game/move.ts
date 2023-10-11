@@ -1,5 +1,5 @@
-import { end, play } from "./game.ts";
-
+import { gameStatus, end, play } from "./game.ts";
+import { watchEffect } from "vue";
 interface Position {
   x: number;
   y: number;
@@ -10,6 +10,14 @@ export default function useMove(mapData: any) {
   let masterPos: Position = { x: -1, y: -1 };
   let perMasterType = 0;
   let perBoxType = 0;
+
+  watchEffect(()=>{
+    if(gameStatus.value){
+      console.log('----->清空',gameStatus.value);
+      perMasterType = 0
+      perBoxType = 0
+    }
+  })
 
   function getMasterPos(): Position {
     let x = -1,

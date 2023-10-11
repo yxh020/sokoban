@@ -1,19 +1,22 @@
 <template>
-  <div class="game">
+  <div v-if='mapData' class="game">
     <Map :mapData="mapData"></Map>
   </div>
-  <button v-show='gameStatus === 2'>下一关</button>
+  <p>当前关卡{{level}}</p>
+  <button @click='nextLevel' v-show='gameStatus === 2'>下一关</button>
 </template>
 <script setup lang="ts">
 import Map from "@/components/map/map.vue";
 import useMove from './move.ts'
-import { gameStatus } from './game.ts'
+import { gameStatus, level, nextLevel } from './game.ts'
+import { gameLevel } from '@/config/index.ts'
 
-const arr = [[1,1,0,1,1,1],[1,0,0,0,0,1],[1,2,4,0,0,1],[1,0,0,3,0,1],[1,0,0,0,0,1],[1,0,1,1,1,1]]
-const mapData = ref(arr);
+const mapData = ref(null);
 
 watchEffect(()=>{
+  mapData.value = gameLevel[level.value].data
   console.log(mapData.value);
+  
 })
 
 const { moveUp,moveDown,moveLeft,moveRight } = useMove(mapData)

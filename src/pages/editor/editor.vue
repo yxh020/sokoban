@@ -68,6 +68,7 @@ const onMouseUp = () => {
 
 function complete(){
     console.log(JSON.stringify(toRaw(mapData.value)));
+    
 }
 </script>
 <style lang='scss' scoped>

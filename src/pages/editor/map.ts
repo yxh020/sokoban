@@ -56,12 +56,13 @@ export default function useMap(mapClientRect: Ref<DOMRect | null>) {
       const _x = Math.floor((pageX - left) / 50);
       const _y = Math.floor((pageY - top) / 50);
 
-      const x = _x <= row.value ? _x : row.value;
-      const y = _y <= col.value ? _y : col.value;
+      const x = _x <= row.value - 1 ? _x : row.value - 1;
+      const y = _y <= col.value - 1 ? _y : col.value - 1;
 
       // console.log("--onMouseMove", x, y);
       if (currentSelectedEditElement.value.max) {
-        const typeCount = getNumberByType(currentSelectedEditElement.value.type) + 1;
+        const typeCount =
+          getNumberByType(currentSelectedEditElement.value.type) + 1;
         // console.log(typeCount);
         if (typeCount > currentSelectedEditElement.value.max) {
           // 清除之前的一个坐标

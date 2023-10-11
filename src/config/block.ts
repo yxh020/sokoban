@@ -31,14 +31,14 @@ export const blockList: Block[] = [
     name: "目标点",
     icon: "/src/assets/zd.png",
     activeIcon: "",
-    max: 1,
+    max: 3,
   },
   {
     type: 4,
     name: "箱子",
     icon: "/src/assets/xz.png",
     activeIcon: "/src/assets/xz2.png",
-    max: 1,
+    max: 3,
   },
   {
     type: 5,
