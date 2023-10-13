@@ -15,7 +15,7 @@ function getElement(type: number) {
     }
 }
 
-watch(() => props.type, (type) => {
+watch(() => props.type, (type:number) => {
     getElement(type)
 }, { immediate: true })
 

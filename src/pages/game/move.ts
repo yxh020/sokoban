@@ -13,7 +13,7 @@ export default function useMove(mapData: any) {
 
   watchEffect(()=>{
     if(gameStatus.value){
-      console.log('----->清空',gameStatus.value);
+      console.log('----->清空缓存',gameStatus.value);
       perMasterType = 0
       perBoxType = 0
     }
