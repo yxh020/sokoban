@@ -18,35 +18,35 @@ export const blockList: Block[] = [
   {
     type: BLOCK_TYPE.FLOOR,
     name: "地板",
-    icon: "/src/assets/dm.png"
+    icon: new URL("/src/assets/dm.png",import.meta.url).href
   },
   {
     type: BLOCK_TYPE.WALL,
     name: "墙",
-    icon: "/src/assets/qt.png",
+    icon: new URL("/src/assets/qt.png",import.meta.url).href
   },
   {
     type: BLOCK_TYPE.PLAYER,
     name: "玩家",
-    icon: "/src/assets/rw.png",
+    icon: new URL("/src/assets/rw.png",import.meta.url).href,
     max: 1,
   },
   {
     type: BLOCK_TYPE.TARGET,
     name: "目标点",
-    icon: "/src/assets/zd.png",
+    icon: new URL("/src/assets/zd.png",import.meta.url).href,
     max: 3,
   },
   {
     type: BLOCK_TYPE.BOX,
     name: "箱子",
-    icon: "/src/assets/xz.png",
+    icon: new URL("/src/assets/xz.png",import.meta.url).href,
     max: 3,
   },
   {
     type: BLOCK_TYPE.BOX_ON_TARGET,
     name: "目标点上的箱子",
-    icon: "/src/assets/xz2.png",
+    icon: new URL("/src/assets/xz2.png",import.meta.url).href,
     hide: true
   },
 ];
