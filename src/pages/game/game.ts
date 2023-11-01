@@ -1,19 +1,23 @@
 import { ref } from "vue";
 import { gameLevel } from '@/config/index.ts'
+import { BLOCK_TYPE } from '@/config/block.ts'
 
+export const showNext = ref(false)
 export const level = ref(0)
-export const gameStatus = ref(0) //0: 未开始 1：已开始 2：完成
+export let targetCount = 0; //目标数量
 
-export function play() {
-    gameStatus.value = 1
-}
-
-export function end() {
-    gameStatus.value = 2
+export function initGame(map:any){
+    init()
+    map.forEach((e:any) => {
+        const count = e.filter((i:any) => i == BLOCK_TYPE.TARGET).length
+        targetCount += count
+    });
+    console.log('----targetCount',targetCount);
 }
 
 export function init() {
-    gameStatus.value = 0
+    targetCount = 0
+    showNext.value = false
 }  
 
 export function nextLevel() {

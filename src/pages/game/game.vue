@@ -2,28 +2,35 @@
   <div v-if='!!mapData' class="game">
     <Map :mapData="mapData"></Map>
   </div>
-  <!-- <p>当前关卡{{ level }}</p>
-  <button @click='nextLevel' v-show='gameStatus === 2'>下一关</button> -->
+  <p>当前关卡{{ level }}</p>
+  <button v-show="showNext" @click='nextLevel' >下一关</button>
 </template>
 <script setup lang="ts">
 import Map from "@/components/map/map.vue";
 import useMove from './move.ts'
-// import { gameStatus, level, nextLevel } from './game.ts'
-// import { gameLevel } from '@/config/index.ts'
+import { level, nextLevel, showNext, initGame } from './game.ts'
+import { gameLevel } from '@/config/index.ts'
 
 const router = useRouter()
-const mapData = ref(null);
+const mapData = ref();
 
-// watchEffect(() => {
-//   mapData.value = gameLevel[level.value].data
-//   console.log(mapData.value);
-// })
+watch(mapData,(m) => {
+  initGame(m)
+})
+
+watch(level,(l)=>{
+  console.log('----level',l);
+  mapData.value = gameLevel[level.value].data
+})
 
 const { moveUp, moveDown, moveLeft, moveRight } = useMove(mapData)
 
 onMounted(() => {
   const { map } = router.currentRoute.value.query
-  map && (mapData.value = JSON.parse(map.toString()))
+  if(map){
+    mapData.value = JSON.parse(map.toString())
+    initGame(mapData.value)
+  }
   start()
 });
 

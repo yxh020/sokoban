@@ -1,5 +1,6 @@
-import { gameStatus, end, play } from "./game.ts";
+import { targetCount, showNext } from "./game.ts";
 import { watchEffect } from "vue";
+import { BLOCK_TYPE } from '@/config/block.ts'
 interface Position {
   x: number;
   y: number;
@@ -7,60 +8,70 @@ interface Position {
 
 // 0: 地板 1：墙 2: 玩家 3：目标 4：箱子
 export default function useMove(mapData: any) {
-  let masterPos: Position = { x: -1, y: -1 };
-  let perMasterType = 0;
-  let perBoxType = 0;
+  let playerPos: Position = { x: -1, y: -1 };
+  let perPlayerType = BLOCK_TYPE.FLOOR;
+  let perBoxTypeMap = new Map()
 
   watchEffect(()=>{
-    if(gameStatus.value){
-      console.log('----->清空缓存',gameStatus.value);
-      perMasterType = 0
-      perBoxType = 0
+    if(mapData.value){
+      console.log('----->清空缓存');
+      perPlayerType = BLOCK_TYPE.FLOOR;
+      perBoxTypeMap.clear()
     }
   })
 
-  function getMasterPos(): Position {
-    let x = -1,
-      y = -1;
+  function getPlayerPos(): Position {
+    let x = -1, y = -1;
     for (let index = 0; index < mapData.value.length; index++) {
       const element = mapData.value[index];
       y = index;
-      const res = element.findIndex((v: any) => v === 2);
+      const res = element.findIndex((v: any) => v === BLOCK_TYPE.PLAYER);
       if (res !== -1) {
         x = res;
         break;
       }
     }
-    masterPos = { x, y };
-    return masterPos;
+    playerPos = { x, y };
+    return playerPos;
   }
 
-  function setMasterPos(position: Position, type: number) {
+  function setPlayerPos(position: Position, type: number) {
     // 恢复原位置
-    mapData.value[masterPos.y][masterPos.x] = perMasterType;
+    mapData.value[playerPos.y][playerPos.x] = perPlayerType;
     // 修改到新位置
-    mapData.value[position.y][position.x] = 2;
+    mapData.value[position.y][position.x] = BLOCK_TYPE.PLAYER;
     // 保存原位置type
-    perMasterType = type;
+    perPlayerType = type;
   }
 
   function pushBox(oldPos: Position, newPos: Position) {
     // console.log('pushBox',oldPos,newPos,type);
     const newBoxNextPosType = getTypeByPos(newPos);
-    // 撞墙了
-    if (newBoxNextPosType === 1) return;
+    // 是否能前进
+    if (newBoxNextPosType !== BLOCK_TYPE.FLOOR && newBoxNextPosType !== BLOCK_TYPE.TARGET) return;
     // 获取新位置上type
     const oldType = getTypeByPos(newPos);
     // 恢复原位置上
-    mapData.value[oldPos.y][oldPos.x] = perBoxType;
+    mapData.value[oldPos.y][oldPos.x] = perBoxTypeMap.get(JSON.stringify(oldPos))
     // 修改箱子新位置
-    mapData.value[newPos.y][newPos.x] = oldType === 3 ? 5 : 4
+    mapData.value[newPos.y][newPos.x] = oldType === BLOCK_TYPE.TARGET ? BLOCK_TYPE.BOX_ON_TARGET : BLOCK_TYPE.BOX
     // 修改玩家新位置
-    setMasterPos(oldPos, perBoxType);
+    setPlayerPos(oldPos, perBoxTypeMap.get(JSON.stringify(oldPos)) || BLOCK_TYPE.FLOOR);
     // 保存新位置上type
-    perBoxType = oldType;
+    perBoxTypeMap.set(JSON.stringify(newPos),oldType)
+    // console.log('---perBoxTypeMap',perBoxTypeMap);
     // 判断游戏是否结束
-    oldType === 3 ? end() : play();
+    let achievableTarget = 0;
+    mapData.value.forEach((e:any) => {
+        const count = e.filter((i:any) => i == BLOCK_TYPE.BOX_ON_TARGET).length
+        achievableTarget += count
+    });
+    if(targetCount === achievableTarget){
+      // console.log('---game over');
+      showNext.value = true
+    }else{
+      showNext.value = false
+    }
   }
 
   function getTypeByPos(position: Position): number {
@@ -70,17 +81,17 @@ export default function useMove(mapData: any) {
   function move(movePos: Position) {
     // 获取人物当前位置
     try {
-      const { x: _x, y: _y } = getMasterPos();
+      const { x: _x, y: _y } = getPlayerPos();
       const x = _x + movePos.x;
       const y = _y + movePos.y;
       const type = getTypeByPos({ x, y });
       switch (type) {
-        case 0:
-        case 3:
-          setMasterPos({ x, y }, type);
+        case BLOCK_TYPE.FLOOR:
+        case BLOCK_TYPE.TARGET:
+          setPlayerPos({ x, y }, type);
           break;
-        case 4:
-        case 5:
+        case BLOCK_TYPE.BOX:
+        case BLOCK_TYPE.BOX_ON_TARGET:
           const boxNextX = x + movePos.x;
           const boxNextY = y + movePos.y;
           const pos = { x: boxNextX, y: boxNextY };
@@ -89,7 +100,9 @@ export default function useMove(mapData: any) {
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function moveUp() {
