@@ -1,10 +1,12 @@
 <template>
     <h3>选定的元素：{{ currentSelectedEditElement?.name || 'null' }}</h3>
     <div class="list">
-        <div @click='handleClick(item)' v-for="item in blockList" :key="item.type" class="item">
-            <img :src="item.icon" alt="">
-            <span>{{ item.name }}</span>
-        </div>
+        <template v-for="item in blockList" :key="item.type">
+            <div v-if="!item.hide" @click='handleClick(item)'  class="item">
+                <img :src="item.icon" alt="">
+                <span>{{ item.name }}</span>
+            </div>
+        </template>
     </div>
 </template>
 <script setup lang='ts'>

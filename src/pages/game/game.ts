@@ -21,8 +21,10 @@ export function init() {
 }  
 
 export function nextLevel() {
-    if(gameLevel.length > level.value){
+    console.log(gameLevel.length,level.value);
+    if(gameLevel.length > level.value + 1){
         level.value++
-        init()
+    }else{
+        alert('恭喜通关啦！')
     }
 }

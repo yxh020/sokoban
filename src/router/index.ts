@@ -7,7 +7,7 @@ export const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "editor",
+      redirect: "game",
     },
 
     {

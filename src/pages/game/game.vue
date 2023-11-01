@@ -2,8 +2,9 @@
   <div v-if='!!mapData' class="game">
     <Map :mapData="mapData"></Map>
   </div>
-  <p>当前关卡{{ level }}</p>
+  <p>当前关卡{{ level + 1 }}</p>
   <button v-show="showNext" @click='nextLevel' >下一关</button>
+  <button @click="edit">编辑关卡</button>
 </template>
 <script setup lang="ts">
 import Map from "@/components/map/map.vue";
@@ -30,9 +31,15 @@ onMounted(() => {
   if(map){
     mapData.value = JSON.parse(map.toString())
     initGame(mapData.value)
+  }else{
+    mapData.value = gameLevel[level.value].data
   }
   start()
 });
+
+function edit() {
+  router.push({ name: "editor" });
+}
 
 function start() {
   document.onkeyup = function (event) {

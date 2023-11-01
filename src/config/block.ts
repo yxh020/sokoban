@@ -11,6 +11,7 @@ export interface Block {
   name: string;
   icon: string;
   max?: number;
+  hide?: boolean;
 }
 
 export const blockList: Block[] = [
@@ -46,6 +47,6 @@ export const blockList: Block[] = [
     type: BLOCK_TYPE.BOX_ON_TARGET,
     name: "目标点上的箱子",
     icon: "/src/assets/xz2.png",
-    max: 1,
+    hide: true
   },
 ];
