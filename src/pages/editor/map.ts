@@ -12,7 +12,7 @@ export default function useMap(mapClientRect: Ref<DOMRect | null>) {
   });
 
   function createMap(col: number, row: number) {
-    return new Array(col).fill(null).map(() => new Array(row).fill(0));
+    return new Array(col).fill(null).map(() => new Array(row).fill(null));
   }
 
   function getNumberByType(type: number) {

@@ -2,7 +2,11 @@
     <div ref="containerRef" class="map">
         <div v-for="(v,i) in mapData" :key="i">
         <div class="col">
-            <Block v-for="(x,y) in v" :type="x" :key="y"></Block>
+            <template v-for="x in v" :type="x">
+                <Block v-if="x !== null" :type="x"></Block>
+                <div v-else class="empty"></div>
+            </template>
+
         </div>
     </div>
     </div>

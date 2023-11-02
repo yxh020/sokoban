@@ -3,7 +3,8 @@
     <Map :mapData="mapData"></Map>
   </div>
   <p>当前关卡{{ level + 1 }}</p>
-  <button v-show="showNext" @click='nextLevel' >下一关</button>
+  <button @click='reset'>重置</button>
+  <button v-show="showNext && localGames" @click='nextLevel' >下一关</button>
   <button @click="edit">编辑关卡</button>
 </template>
 <script setup lang="ts">
@@ -14,6 +15,7 @@ import { gameLevel } from '@/config/index.ts'
 
 const router = useRouter()
 const mapData = ref();
+const localGames = ref(true)
 
 watch(mapData,(m) => {
   initGame(m)
@@ -27,15 +29,20 @@ watch(level,(l)=>{
 const { moveUp, moveDown, moveLeft, moveRight } = useMove(mapData)
 
 onMounted(() => {
+  reset()
+  start()
+});
+
+function reset() {
   const { map } = router.currentRoute.value.query
   if(map){
     mapData.value = JSON.parse(map.toString())
     initGame(mapData.value)
+    localGames.value = false
   }else{
-    mapData.value = gameLevel[level.value].data
+    mapData.value = JSON.parse(JSON.stringify(gameLevel[level.value].data))
   }
-  start()
-});
+}
 
 function edit() {
   router.push({ name: "editor" });
@@ -69,7 +76,7 @@ function start() {
 </script>
 <style lang="scss" scoped>
 .game {
-  background-color: skyblue;
+  background-color: rgb(0, 0, 0);
   display: flex;
   justify-content: center;
 }

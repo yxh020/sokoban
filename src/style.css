@@ -11,9 +11,10 @@
 .empty {
   width: var(--length);
   height: var(--length);
-  background: silver;
+  /* background: silver; */
   border: 1px solid #000;
   box-sizing: border-box;
+  display: inline-block;
 }
 body {
   padding: 0;
