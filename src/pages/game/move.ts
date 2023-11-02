@@ -14,7 +14,7 @@ export default function useMove(mapData: any) {
 
   watchEffect(()=>{
     if(mapData.value){
-      console.log('----->清空缓存');
+      // console.log('----->清空缓存');
       perPlayerType = BLOCK_TYPE.FLOOR;
       perBoxTypeMap.clear()
     }

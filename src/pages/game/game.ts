@@ -12,7 +12,7 @@ export function initGame(map:any){
         const count = e.filter((i:any) => i == BLOCK_TYPE.TARGET).length
         targetCount += count
     });
-    console.log('----targetCount',targetCount);
+    // console.log('----targetCount',targetCount);
 }
 
 export function init() {
@@ -21,7 +21,7 @@ export function init() {
 }  
 
 export function nextLevel() {
-    console.log(gameLevel.length,level.value);
+    // console.log(gameLevel.length,level.value);
     if(gameLevel.length > level.value + 1){
         level.value++
     }else{

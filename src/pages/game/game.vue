@@ -2,10 +2,12 @@
   <div v-if='!!mapData' class="game">
     <Map :mapData="mapData"></Map>
   </div>
-  <p>当前关卡{{ level + 1 }}</p>
-  <button @click='reset'>重置</button>
-  <button v-show="showNext && localGames" @click='nextLevel' >下一关</button>
+  <p v-if="localGames">当前关卡{{ level + 1 }}</p>
   <button @click="edit">编辑关卡</button>
+  <button @click='reset'>重置</button>
+  <button v-if="!localGames" @click='game'>回到游戏</button>
+  <button v-if="showNext && localGames" @click='nextLevel'>下一关</button>
+  <button v-if="showNext && !localGames" @click='complete'>完成</button>
 </template>
 <script setup lang="ts">
 import Map from "@/components/map/map.vue";
@@ -23,7 +25,7 @@ watch(mapData,(m) => {
 
 watch(level,(l)=>{
   console.log('----level',l);
-  mapData.value = gameLevel[level.value].data
+  mapData.value = JSON.parse(JSON.stringify(gameLevel[level.value].data))
 })
 
 const { moveUp, moveDown, moveLeft, moveRight } = useMove(mapData)
@@ -32,6 +34,16 @@ onMounted(() => {
   reset()
   start()
 });
+
+function complete() {
+  alert('过关了！')
+}
+
+function game(){
+  router.replace({ name: "game" });
+  localGames.value = true
+  setTimeout(reset)
+}
 
 function reset() {
   const { map } = router.currentRoute.value.query
@@ -79,5 +91,11 @@ function start() {
   background-color: rgb(0, 0, 0);
   display: flex;
   justify-content: center;
+}
+button{
+  height: 40px;
+  padding: 0 20px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 </style>

@@ -73,7 +73,7 @@ const onMouseUp = () => {
 };
 
 function complete() {
-  console.log();
+  // console.log(JSON.stringify(toRaw(mapData.value)));
   router.push({ name: "game", query: { map: JSON.stringify(toRaw(mapData.value)) } });
 }
 </script>
