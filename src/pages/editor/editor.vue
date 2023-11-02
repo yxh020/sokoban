@@ -73,7 +73,7 @@ const onMouseUp = () => {
 };
 
 function complete() {
-  // console.log(JSON.stringify(toRaw(mapData.value)));
+  console.log(JSON.stringify(toRaw(mapData.value)));
   router.push({ name: "game", query: { map: JSON.stringify(toRaw(mapData.value)) } });
 }
 </script>
@@ -82,7 +82,7 @@ function complete() {
   border: pink 1px solid;
   display: flex;
   justify-content: center;
-  margin-top: 100px;
+  // margin-top: 100px;
 }
 
 .btn {
